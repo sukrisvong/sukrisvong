@@ -55,4 +55,8 @@ services:
 
 volumes:
   certbot_certs:
+    external: true
+    name: sukrisvong_certbot_certs
   certbot_webroot:
+    external: true
+    name: sukrisvong_certbot_webroot

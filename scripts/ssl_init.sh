@@ -6,6 +6,7 @@ source /app/.env
 COMPOSE="docker compose -f /app/docker-compose.yml -f /app/docker-compose.prod.yml"
 
 # Create volumes if they don't exist
+# Use fixed names so docker-compose.prod.yml external volumes match
 docker volume create sukrisvong_certbot_certs 2>/dev/null || true
 docker volume create sukrisvong_certbot_webroot 2>/dev/null || true
 
