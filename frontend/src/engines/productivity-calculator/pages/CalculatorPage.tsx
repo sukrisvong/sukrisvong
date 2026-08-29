@@ -2,9 +2,8 @@ import { useState } from "react"
 import styles from "./CalculatorPage.module.css"
 
 interface Result {
+  time_required: string
   end_time: string
-  time_on_site: string
-  productivity_percentage: number | null
 }
 
 function currentTimeHHMM() {
@@ -16,7 +15,7 @@ const DEFAULT_FORM = {
   start_time: currentTimeHHMM(),
   hours_scheduled: "6",
   minutes_scheduled: "0",
-  productivity_goal: "",
+  productivity_goal: "85",
 }
 
 export default function CalculatorPage() {
@@ -56,15 +55,12 @@ export default function CalculatorPage() {
     }
   }
 
-  const pct = result?.productivity_percentage
-  const pctColor = pct == null ? undefined : pct >= 100 ? "var(--green)" : pct >= 75 ? "var(--amber)" : "var(--red)"
 
   return (
     <div className={styles.root}>
       <header className={styles.header}>
         <p className={styles.label}>ENGINE · PRODUCTIVITY</p>
         <h1 className={styles.title}>Productivity Calculator</h1>
-        <p className={styles.subtitle}>How much did you get done today?</p>
       </header>
 
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -81,7 +77,7 @@ export default function CalculatorPage() {
         </Field>
 
         <div className={styles.row}>
-          <Field label="Hours Scheduled" htmlFor="hours_scheduled">
+          <Field label="Hours of Work" htmlFor="hours_scheduled">
             <input
               id="hours_scheduled"
               name="hours_scheduled"
@@ -95,7 +91,7 @@ export default function CalculatorPage() {
               className={styles.input}
             />
           </Field>
-          <Field label="Minutes Scheduled" htmlFor="minutes_scheduled">
+          <Field label="Minutes of Work" htmlFor="minutes_scheduled">
             <input
               id="minutes_scheduled"
               name="minutes_scheduled"
@@ -135,16 +131,8 @@ export default function CalculatorPage() {
 
       {result && (
         <section className={styles.results}>
+          <ResultCard label="Time Required On-Site" value={result.time_required} />
           <ResultCard label="End Time" value={result.end_time} />
-          <ResultCard label="Time On-Site" value={result.time_on_site} />
-          {pct != null && (
-            <ResultCard
-              label="vs. Goal"
-              value={`${pct}%`}
-              valueStyle={{ color: pctColor }}
-              note={pct >= 100 ? "Goal met!" : `${(100 - pct).toFixed(1)}% below goal`}
-            />
-          )}
         </section>
       )}
     </div>

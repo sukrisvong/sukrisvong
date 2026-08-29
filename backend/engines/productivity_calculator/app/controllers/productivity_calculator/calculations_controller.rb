@@ -3,19 +3,17 @@ module ProductivityCalculator
     def create
       start_time = parse_time(params[:start_time])
       scheduled_minutes = params[:hours_scheduled].to_i * 60 + params[:minutes_scheduled].to_i
-      goal = params[:productivity_goal].to_f
+      productivity = params[:productivity_goal].to_f / 100.0
 
       return render json: { error: "Invalid start time" }, status: :unprocessable_entity unless start_time
+      return render json: { error: "Productivity goal must be greater than 0" }, status: :unprocessable_entity if productivity <= 0
 
-      end_time = start_time + scheduled_minutes * 60
-      time_on_site_minutes = scheduled_minutes
-
-      productivity = goal > 0 ? (time_on_site_minutes.to_f / (goal / 100.0 * scheduled_minutes) * 100).round(1) : nil
+      total_minutes = (scheduled_minutes / productivity).floor
+      end_time = start_time + total_minutes * 60
 
       render json: {
-        end_time: end_time.strftime("%I:%M %p"),
-        time_on_site: format_duration(time_on_site_minutes),
-        productivity_percentage: productivity
+        time_required: format_duration(total_minutes),
+        end_time: end_time.strftime("%I:%M %p")
       }
     end
 
@@ -31,7 +29,7 @@ module ProductivityCalculator
     def format_duration(minutes)
       h = minutes / 60
       m = minutes % 60
-      m > 0 ? "#{h}h #{m}m" : "#{h}h"
+      m > 0 ? "#{h} hours and #{m} minutes" : "#{h} hours"
     end
   end
 end
