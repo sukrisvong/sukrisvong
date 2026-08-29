@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-app_development}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-app_development}
+      RAILS_ENV: development
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-dev_secret_change_in_prod}
+    volumes:
+      - ./backend:/app          # live reload in dev
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "3000"
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    expose:
+      - "80"
+
+  nginx:
+    build:
+      context: ./nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  postgres_data:

@@ -1,0 +1,14 @@
+.env
+*.log
+.DS_Store
+
+# Rails
+backend/log/
+backend/tmp/
+backend/storage/
+backend/.bundle/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env*

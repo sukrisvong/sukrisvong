@@ -1,0 +1,19 @@
+# Extends docker-compose.yml for production
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  backend:
+    volumes: []              # no bind mount in prod — use the built image
+    environment:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      DATABASE_URL: ${DATABASE_URL}
+
+  frontend:
+    build:
+      context: ./frontend
+      target: build          # uses the nginx serve stage automatically
+
+  nginx:
+    ports:
+      - "80:80"
