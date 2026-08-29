@@ -1,15 +1,18 @@
 module ProductivityCalculator
-  class CalculationService
+  class Calculator
+    include Callable
+
     Result = Data.define(:time_required, :end_time)
 
-    attr_reader :errors
+    attr_reader :errors, :result
 
     def initialize(params)
-      @start_time_raw   = params[:start_time]
-      @hours_scheduled  = params[:hours_scheduled].to_i
+      @start_time_raw    = params[:start_time]
+      @hours_scheduled   = params[:hours_scheduled].to_i
       @minutes_scheduled = params[:minutes_scheduled].to_i
       @productivity_goal = params[:productivity_goal].to_f
       @errors = []
+      @result = nil
     end
 
     def call
@@ -20,10 +23,12 @@ module ProductivityCalculator
       total_minutes = (scheduled_minutes / (@productivity_goal / 100.0)).floor
       end_time = @start_time + total_minutes * 60
 
-      Result.new(
+      @result = Result.new(
         time_required: format_duration(total_minutes),
         end_time: end_time.strftime("%I:%M %p")
       )
+
+      self
     end
 
     def success?

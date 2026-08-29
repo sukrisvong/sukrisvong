@@ -1,13 +1,12 @@
 module ProductivityCalculator
   class CalculationsController < ApplicationController
     def create
-      service = CalculationService.new(params)
-      result = service.call
+      calculator = Calculator.call(params)
 
-      if service.success?
-        render json: result
+      if calculator.success?
+        render json: calculator.result
       else
-        render json: { errors: service.errors }, status: :unprocessable_entity
+        render json: { errors: calculator.errors }, status: :unprocessable_entity
       end
     end
   end

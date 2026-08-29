@@ -1,18 +1,18 @@
 require "test_helper"
 
 module ProductivityCalculator
-  class CalculationServiceTest < ActiveSupport::TestCase
+  class CalculatorTest < ActiveSupport::TestCase
     def call(start_time: "09:00", hours: 6, minutes: 0, goal: 85)
-      CalculationService.new(
+      Calculator.new(
         start_time: start_time,
         hours_scheduled: hours,
         minutes_scheduled: minutes,
         productivity_goal: goal
-      ).call
+      ).call.result
     end
 
-    def service(start_time: "09:00", hours: 6, minutes: 0, goal: 85)
-      CalculationService.new(
+    def calculator(start_time: "09:00", hours: 6, minutes: 0, goal: 85)
+      Calculator.new(
         start_time: start_time,
         hours_scheduled: hours,
         minutes_scheduled: minutes,
@@ -56,35 +56,35 @@ module ProductivityCalculator
     # --- Validation ---
 
     test "is successful with valid params" do
-      s = service
+      s = calculator
       s.call
       assert s.success?
       assert_empty s.errors
     end
 
     test "returns error for invalid start time" do
-      s = service(start_time: "not-a-time")
+      s = calculator(start_time: "not-a-time")
       s.call
       assert_not s.success?
       assert_includes s.errors, "Invalid start time"
     end
 
     test "returns error when productivity goal is zero" do
-      s = service(goal: 0)
+      s = calculator(goal: 0)
       s.call
       assert_not s.success?
       assert_includes s.errors, "Productivity goal must be greater than 0"
     end
 
     test "returns error when productivity goal is negative" do
-      s = service(goal: -10)
+      s = calculator(goal: -10)
       s.call
       assert_not s.success?
       assert_includes s.errors, "Productivity goal must be greater than 0"
     end
 
     test "can return multiple errors" do
-      s = service(start_time: "bad", goal: 0)
+      s = calculator(start_time: "bad", goal: 0)
       s.call
       assert_equal 2, s.errors.length
     end
