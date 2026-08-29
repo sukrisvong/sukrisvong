@@ -1,0 +1,183 @@
+:root {
+  --cyan: #00fff5;
+  --magenta: #ff00c8;
+  --yellow: #f5e642;
+  --bg: #080c10;
+  --surface: #0d1117;
+  --text: #c8e0e8;
+  --dim: #3a5060;
+}
+
+.root {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: "Share Tech Mono", "Courier New", monospace;
+  color: var(--text);
+}
+
+/* CRT scanlines */
+.scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.18) 3px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  z-index: 10;
+}
+
+/* Perspective grid floor */
+.grid {
+  pointer-events: none;
+  position: fixed;
+  bottom: 0;
+  left: -50%;
+  width: 200%;
+  height: 55vh;
+  background-image:
+    linear-gradient(rgba(0, 255, 245, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 245, 0.12) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(400px) rotateX(60deg);
+  transform-origin: center bottom;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 40%);
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  padding: 2rem;
+  max-width: 680px;
+}
+
+.tag {
+  font-size: 0.75rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.title {
+  font-size: clamp(2.2rem, 8vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  margin: 0 0 1.5rem;
+  color: var(--cyan);
+  text-shadow:
+    0 0 8px var(--cyan),
+    0 0 30px rgba(0, 255, 245, 0.4);
+  position: relative;
+}
+
+/* Chromatic aberration on the pseudo-elements */
+.title::before,
+.title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.title::before {
+  color: var(--magenta);
+  text-shadow: none;
+  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+  transform: translate(-3px, 0);
+  opacity: 0.7;
+  animation: glitch-clip 4s infinite steps(1);
+}
+.title::after {
+  color: var(--yellow);
+  text-shadow: none;
+  clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+  transform: translate(3px, 0);
+  opacity: 0.6;
+  animation: glitch-clip 4s 0.5s infinite steps(1);
+}
+
+@keyframes glitch-clip {
+  0%, 90%, 100% { opacity: 0 }
+  91%  { opacity: 0.7; transform: translate(-4px, 1px) }
+  93%  { opacity: 0.7; transform: translate(4px, -1px) }
+  95%  { opacity: 0.7; transform: translate(-2px, 0) }
+  97%  { opacity: 0; }
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 3rem;
+}
+
+.statusBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+  background: rgba(0, 255, 245, 0.03);
+  border: 1px solid rgba(0, 255, 245, 0.15);
+  border-left: 3px solid var(--cyan);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 2.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+}
+
+.statusLine {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.statusLabel {
+  color: var(--text);
+  min-width: 90px;
+}
+
+.statusDots {
+  color: var(--dim);
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.statusOk {
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+}
+
+.statusPending {
+  color: var(--magenta);
+  text-shadow: 0 0 6px var(--magenta);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1 }
+  50%       { opacity: 0.4 }
+}
+
+.blink {
+  font-size: 1.4rem;
+  color: var(--cyan);
+  text-shadow: 0 0 8px var(--cyan);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1 }
+  50%       { opacity: 0 }
+}
