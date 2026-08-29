@@ -1,4 +1,4 @@
-import { createBrowserRouter, Suspense } from "react-router-dom"
+import { createBrowserRouter } from "react-router-dom"
 import RootLayout from "./shared/layout/RootLayout"
 import { coreRoutes } from "./engines/core/router"
 
