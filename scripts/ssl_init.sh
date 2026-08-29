@@ -5,10 +5,17 @@ set -euo pipefail
 source /app/.env
 COMPOSE="docker compose -f /app/docker-compose.yml -f /app/docker-compose.prod.yml"
 
-# Start nginx with bootstrap (HTTP-only) config so ACME challenge works
+# Create volumes if they don't exist
+docker volume create sukrisvong_certbot_certs 2>/dev/null || true
+docker volume create sukrisvong_certbot_webroot 2>/dev/null || true
+
+WEBROOT=$(docker volume inspect sukrisvong_certbot_webroot --format '{{.Mountpoint}}')
+sudo mkdir -p "${WEBROOT}/.well-known/acme-challenge"
+
+# Start a temporary nginx to serve the ACME challenge on port 80
 docker run -d --name nginx-bootstrap \
   -p 80:80 \
-  -v "$(docker volume inspect sukrisvong_certbot_webroot -f '{{.Mountpoint}}'):/var/www/certbot" \
+  -v "sukrisvong_certbot_webroot:/var/www/certbot" \
   nginx:alpine sh -c "
     mkdir -p /etc/nginx/conf.d
     cat > /etc/nginx/conf.d/default.conf << 'EOF'
@@ -21,17 +28,23 @@ server {
 EOF
     nginx -g 'daemon off;'"
 
-# Get the cert
-$COMPOSE run --rm certbot certbot certonly \
-  --webroot \
-  --webroot-path=/var/www/certbot \
-  --email "${CERTBOT_EMAIL}" \
-  --agree-tos \
-  --no-eff-email \
-  -d "${DOMAIN}"
+sleep 2
+
+# Obtain the certificate
+docker run --rm \
+  -v sukrisvong_certbot_certs:/etc/letsencrypt \
+  -v sukrisvong_certbot_webroot:/var/www/certbot \
+  certbot/certbot certonly \
+    --webroot \
+    --webroot-path=/var/www/certbot \
+    --email "${CERTBOT_EMAIL}" \
+    --agree-tos \
+    --no-eff-email \
+    -d "${DOMAIN}"
 
 # Tear down bootstrap nginx, start the real stack
 docker stop nginx-bootstrap && docker rm nginx-bootstrap
-$COMPOSE up -d
+
+$COMPOSE up -d --build
 
 echo "Done. Your site should be live at https://${DOMAIN}"
