@@ -6,11 +6,11 @@ module ProductivityCalculator
 
     attr_reader :errors, :result
 
-    def initialize(params)
-      @start_time_raw    = params[:start_time]
-      @hours_scheduled   = params[:hours_scheduled].to_i
-      @minutes_scheduled = params[:minutes_scheduled].to_i
-      @productivity_goal = params[:productivity_goal].to_f
+    def initialize(start_time:, hours_scheduled:, minutes_scheduled:, productivity_goal:)
+      @start_time_raw    = start_time
+      @hours_scheduled   = hours_scheduled.to_i
+      @minutes_scheduled = minutes_scheduled.to_i
+      @productivity_goal = productivity_goal.to_f
       @errors = []
       @result = nil
     end
