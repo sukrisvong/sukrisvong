@@ -36,7 +36,11 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
-COPY vendor/* ./vendor/
+# Engine gemspecs must be present before `bundle install` (path: deps)
+COPY engines/core/core.gemspec engines/core/core.gemspec
+COPY engines/core/lib/core/version.rb engines/core/lib/core/version.rb
+COPY engines/productivity_calculator/productivity_calculator.gemspec engines/productivity_calculator/productivity_calculator.gemspec
+COPY engines/productivity_calculator/lib/productivity_calculator/version.rb engines/productivity_calculator/lib/productivity_calculator/version.rb
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle install && \
