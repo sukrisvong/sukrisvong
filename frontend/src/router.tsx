@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     children: [
       ...coreRoutes,
       {
-        path: "productivity-calculator",
+        path: "productivity_calculator",
         children: productivityCalculatorRoutes,
       },
     ],

@@ -7,10 +7,15 @@ interface Result {
   productivity_percentage: number | null
 }
 
+function currentTimeHHMM() {
+  const now = new Date()
+  return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`
+}
+
 const DEFAULT_FORM = {
-  start_time: "",
-  hours_scheduled: "",
-  minutes_scheduled: "",
+  start_time: currentTimeHHMM(),
+  hours_scheduled: "6",
+  minutes_scheduled: "0",
   productivity_goal: "",
 }
 
@@ -33,7 +38,7 @@ export default function CalculatorPage() {
     setResult(null)
 
     try {
-      const res = await fetch("/api/productivity-calculator/calculate", {
+      const res = await fetch("/api/productivity_calculator/calculate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
