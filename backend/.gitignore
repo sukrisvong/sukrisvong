@@ -1,0 +1,19 @@
+# Rails
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/storage/*
+!/storage/.keep
+/public/assets
+.byebug_history
+config/master.key
+config/credentials/*.key
+*.env
+
+# Bundler
+/.bundle
+/vendor/bundle
+
+# Node (if any JS tooling added later)
+node_modules/
