@@ -1,20 +1,18 @@
 import { createBrowserRouter } from "react-router-dom"
 import RootLayout from "./shared/layout/RootLayout"
 import { coreRoutes } from "./engines/core/router"
+import { productivityCalculatorRoutes } from "./engines/productivity-calculator/router"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [
-      // Core engine owns the root — home page + engine nav
       ...coreRoutes,
-
-      // Add future engines here, e.g.:
-      // {
-      //   path: "my-engine",
-      //   lazy: () => import("./engines/my-engine/router").then(m => ({ Component: m.default })),
-      // },
+      {
+        path: "productivity_calculator",
+        children: productivityCalculatorRoutes,
+      },
     ],
   },
 ])

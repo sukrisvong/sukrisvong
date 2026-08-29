@@ -24,3 +24,6 @@ RUN bundle install
 
 EXPOSE 3000
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+
+COPY engines/productivity_calculator/productivity_calculator.gemspec engines/productivity_calculator/productivity_calculator.gemspec
+COPY engines/productivity_calculator/lib/productivity_calculator/version.rb engines/productivity_calculator/lib/productivity_calculator/version.rb
