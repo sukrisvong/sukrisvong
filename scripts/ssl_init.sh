@@ -40,7 +40,8 @@ docker run --rm \
     --email "${CERTBOT_EMAIL}" \
     --agree-tos \
     --no-eff-email \
-    -d "${DOMAIN}"
+    -d "${DOMAIN}" \
+    -d "www.${DOMAIN}"
 
 # Tear down bootstrap nginx, start the real stack
 docker stop nginx-bootstrap && docker rm nginx-bootstrap
