@@ -2,14 +2,22 @@ module ProductivityCalculator
   class CalculationService
     Result = Data.define(:time_required, :end_time)
 
-    def initialize(start_time:, hours_scheduled:, minutes_scheduled:, productivity_goal:)
-      @start_time = start_time
-      @scheduled_minutes = hours_scheduled.to_i * 60 + minutes_scheduled.to_i
-      @productivity = productivity_goal.to_f / 100.0
+    attr_reader :errors
+
+    def initialize(params)
+      @start_time_raw   = params[:start_time]
+      @hours_scheduled  = params[:hours_scheduled].to_i
+      @minutes_scheduled = params[:minutes_scheduled].to_i
+      @productivity_goal = params[:productivity_goal].to_f
+      @errors = []
     end
 
     def call
-      total_minutes = (@scheduled_minutes / @productivity).floor
+      validate
+      return self if @errors.any?
+
+      scheduled_minutes = @hours_scheduled * 60 + @minutes_scheduled
+      total_minutes = (scheduled_minutes / (@productivity_goal / 100.0)).floor
       end_time = @start_time + total_minutes * 60
 
       Result.new(
@@ -18,7 +26,24 @@ module ProductivityCalculator
       )
     end
 
+    def success?
+      @errors.empty?
+    end
+
     private
+
+    def validate
+      @start_time = parse_time(@start_time_raw)
+      @errors << "Invalid start time" unless @start_time
+      @errors << "Productivity goal must be greater than 0" unless @productivity_goal > 0
+    end
+
+    def parse_time(str)
+      return nil if str.blank?
+      Time.parse(str)
+    rescue ArgumentError
+      nil
+    end
 
     def format_duration(minutes)
       h = minutes / 60

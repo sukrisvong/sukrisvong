@@ -17,19 +17,14 @@ module ProductivityCalculator
       assert body.key?("end_time")
     end
 
-    test "returns 422 for invalid start time" do
-      post_calculate(start_time: "not-a-time", hours_scheduled: 6, minutes_scheduled: 0, productivity_goal: 85)
-      assert_response :unprocessable_entity
-    end
+    test "returns 422 with errors array on invalid input" do
+      post_calculate(start_time: "not-a-time", hours_scheduled: 6, minutes_scheduled: 0, productivity_goal: 0)
 
-    test "returns 422 when productivity goal is zero" do
-      post_calculate(start_time: "09:00", hours_scheduled: 6, minutes_scheduled: 0, productivity_goal: 0)
       assert_response :unprocessable_entity
-    end
-
-    test "returns 422 when productivity goal is negative" do
-      post_calculate(start_time: "09:00", hours_scheduled: 6, minutes_scheduled: 0, productivity_goal: -10)
-      assert_response :unprocessable_entity
+      body = JSON.parse(response.body)
+      assert body.key?("errors")
+      assert body["errors"].is_a?(Array)
+      assert body["errors"].any?
     end
   end
 end

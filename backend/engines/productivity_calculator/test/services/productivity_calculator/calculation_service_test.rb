@@ -2,22 +2,33 @@ require "test_helper"
 
 module ProductivityCalculator
   class CalculationServiceTest < ActiveSupport::TestCase
-    def call(hours: 6, minutes: 0, goal: 85)
+    def call(start_time: "09:00", hours: 6, minutes: 0, goal: 85)
       CalculationService.new(
-        start_time: Time.parse("09:00"),
+        start_time: start_time,
         hours_scheduled: hours,
         minutes_scheduled: minutes,
         productivity_goal: goal
       ).call
     end
 
+    def service(start_time: "09:00", hours: 6, minutes: 0, goal: 85)
+      CalculationService.new(
+        start_time: start_time,
+        hours_scheduled: hours,
+        minutes_scheduled: minutes,
+        productivity_goal: goal
+      )
+    end
+
+    # --- Calculations ---
+
     test "calculates total time on site correctly" do
-      result = call(hours: 6, minutes: 0, goal: 85)
+      result = call
       assert_equal "7 hours and 3 minutes", result.time_required
     end
 
     test "calculates end time correctly" do
-      result = call(hours: 6, minutes: 0, goal: 85)
+      result = call
       assert_equal "04:03 PM", result.end_time
     end
 
@@ -37,13 +48,45 @@ module ProductivityCalculator
     end
 
     test "lower productivity means more time on site" do
-      result_high = call(hours: 6, minutes: 0, goal: 90)
-      result_low  = call(hours: 6, minutes: 0, goal: 70)
+      high = call(hours: 6, minutes: 0, goal: 90)
+      low  = call(hours: 6, minutes: 0, goal: 70)
+      assert parse_minutes(low.time_required) > parse_minutes(high.time_required)
+    end
 
-      high_minutes = parse_minutes(result_high.time_required)
-      low_minutes  = parse_minutes(result_low.time_required)
+    # --- Validation ---
 
-      assert low_minutes > high_minutes
+    test "is successful with valid params" do
+      s = service
+      s.call
+      assert s.success?
+      assert_empty s.errors
+    end
+
+    test "returns error for invalid start time" do
+      s = service(start_time: "not-a-time")
+      s.call
+      assert_not s.success?
+      assert_includes s.errors, "Invalid start time"
+    end
+
+    test "returns error when productivity goal is zero" do
+      s = service(goal: 0)
+      s.call
+      assert_not s.success?
+      assert_includes s.errors, "Productivity goal must be greater than 0"
+    end
+
+    test "returns error when productivity goal is negative" do
+      s = service(goal: -10)
+      s.call
+      assert_not s.success?
+      assert_includes s.errors, "Productivity goal must be greater than 0"
+    end
+
+    test "can return multiple errors" do
+      s = service(start_time: "bad", goal: 0)
+      s.call
+      assert_equal 2, s.errors.length
     end
 
     private
