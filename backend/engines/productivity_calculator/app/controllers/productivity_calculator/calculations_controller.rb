@@ -1,7 +1,7 @@
 module ProductivityCalculator
   class CalculationsController < ApplicationController
     def create
-      calculator = Calculator.call(**calculator_params)
+      calculator = ProductivityCalculator::Calculator.call(**calculator_params)
 
       return render json: { errors: calculator.errors }, status: :unprocessable_entity unless calculator.success?
 
