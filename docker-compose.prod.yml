@@ -1,18 +1,24 @@
-# Extends docker-compose.yml for production
-# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# Production overlay — use with:
+# docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 services:
   backend:
-    volumes: []              # no bind mount in prod — use the built image
+    build:
+      context: ./backend
+      dockerfile: Dockerfile       # production multi-stage build
+    volumes: []                    # no bind mount in prod
     environment:
       RAILS_ENV: production
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+    command: []                    # use the Dockerfile CMD (thrust + rails server)
 
   frontend:
     build:
       context: ./frontend
-      target: build          # uses the nginx serve stage automatically
+      dockerfile: Dockerfile       # production multi-stage: node build → nginx serve
+    volumes: []
 
   nginx:
     ports:

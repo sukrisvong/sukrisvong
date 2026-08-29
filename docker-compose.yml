@@ -17,13 +17,16 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile.dev
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-app_development}
       RAILS_ENV: development
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-dev_secret_change_in_prod}
+      DATABASE_URL: postgres://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-app_development}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-dev_secret_not_for_production}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
     volumes:
-      - ./backend:/app          # live reload in dev
+      - ./backend:/rails
+      - bundle_cache:/usr/local/bundle
     depends_on:
       db:
         condition: service_healthy
@@ -33,9 +36,13 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile.dev
     restart: unless-stopped
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     expose:
-      - "80"
+      - "5173"
 
   nginx:
     build:
@@ -49,3 +56,4 @@ services:
 
 volumes:
   postgres_data:
+  bundle_cache:
