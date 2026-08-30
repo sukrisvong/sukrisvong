@@ -18,4 +18,12 @@ describe("routes", () => {
       expect(screen.getByText("Productivity Calculator")).toBeInTheDocument()
     })
   })
+
+  it("renders sorting visualizer at /sorting_visualizer", async () => {
+    const router = createMemoryRouter(routes, { initialEntries: ["/sorting_visualizer"] })
+    render(<RouterProvider router={router} />)
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Sorting Visualizer" })).toBeInTheDocument()
+    })
+  })
 })

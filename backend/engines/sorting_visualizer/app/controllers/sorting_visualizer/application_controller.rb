@@ -1,0 +1,4 @@
+module SortingVisualizer
+  class ApplicationController < ActionController::Base
+  end
+end
