@@ -4,16 +4,13 @@ import styles from "./HomePage.module.css"
 const GLITCH_CHARS = "!<>-_\\/[]{}—=+*^?#"
 
 function useGlitchText(target: string, active: boolean) {
-  const [display, setDisplay] = useState(target)
+  const [glitched, setGlitched] = useState(target)
 
   useEffect(() => {
-    if (!active) {
-      setDisplay(target)
-      return
-    }
+    if (!active) return
     let iteration = 0
     const interval = setInterval(() => {
-      setDisplay(
+      setGlitched(
         target
           .split("")
           .map((char, i) => {
@@ -29,14 +26,13 @@ function useGlitchText(target: string, active: boolean) {
     return () => clearInterval(interval)
   }, [active, target])
 
-  return display
+  return active ? glitched : target
 }
 
 export default function HomePage() {
-  const [glitching, setGlitching] = useState(false)
+  const [glitching, setGlitching] = useState(true)
 
   useEffect(() => {
-    setGlitching(true)
     const t = setTimeout(() => setGlitching(false), 2500)
     return () => clearTimeout(t)
   }, [])

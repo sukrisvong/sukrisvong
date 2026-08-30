@@ -148,22 +148,11 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor: string; c
   )
 }
 
-function ResultCard({
-  label,
-  value,
-  valueStyle,
-  note,
-}: {
-  label: string
-  value: string
-  valueStyle?: React.CSSProperties
-  note?: string
-}) {
+function ResultCard({ label, value }: { label: string; value: string }) {
   return (
     <div className={styles.card}>
       <span className={styles.cardLabel}>{label}</span>
-      <span className={styles.cardValue} style={valueStyle}>{value}</span>
-      {note && <span className={styles.cardNote}>{note}</span>}
+      <span className={styles.cardValue}>{value}</span>
     </div>
   )
 }
