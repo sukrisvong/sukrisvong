@@ -5,12 +5,12 @@ module AlgorithmVisualizer
       LABEL = "Insertion Sort"
       SOURCE = <<~RUBY
         def sort(arr)
-          n = arr.length
-          (1...n).each do |i|
-            j = i
-            while j > 0 && arr.compare(j - 1, j) > 0
-              arr.swap(j - 1, j)
-              j -= 1
+          length = arr.length
+          (1...length).each do |unsorted_start|
+            position = unsorted_start
+            while position > 0 && arr.compare(position - 1, position) > 0
+              arr.swap(position - 1, position)
+              position -= 1
             end
           end
         end

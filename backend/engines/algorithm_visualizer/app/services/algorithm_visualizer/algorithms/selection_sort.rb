@@ -5,13 +5,13 @@ module AlgorithmVisualizer
       LABEL = "Selection Sort"
       SOURCE = <<~RUBY
         def sort(arr)
-          n = arr.length
-          n.times do |i|
-            min = i
-            (i + 1...n).each do |j|
-              min = j if arr.compare(j, min) < 0
+          length = arr.length
+          length.times do |sorted_boundary|
+            min_index = sorted_boundary
+            (sorted_boundary + 1...length).each do |candidate|
+              min_index = candidate if arr.compare(candidate, min_index) < 0
             end
-            arr.swap(i, min) if min != i
+            arr.swap(sorted_boundary, min_index) if min_index != sorted_boundary
           end
         end
       RUBY

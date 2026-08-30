@@ -6,21 +6,21 @@ module AlgorithmVisualizer
       SOURCE = <<~RUBY
         def sort(arr, low = 0, high = arr.length - 1)
           return if low >= high
-          pivot = partition(arr, low, high)
-          sort(arr, low, pivot - 1)
-          sort(arr, pivot + 1, high)
+          pivot_index = partition(arr, low, high)
+          sort(arr, low, pivot_index - 1)
+          sort(arr, pivot_index + 1, high)
         end
 
         def partition(arr, low, high)
-          i = low - 1
-          (low...high).each do |j|
-            if arr.compare(j, high) <= 0
-              i += 1
-              arr.swap(i, j)
+          last_swapped = low - 1
+          (low...high).each do |candidate|
+            if arr.compare(candidate, high) <= 0
+              last_swapped += 1
+              arr.swap(last_swapped, candidate)
             end
           end
-          arr.swap(i + 1, high)
-          i + 1
+          arr.swap(last_swapped + 1, high)
+          last_swapped + 1
         end
       RUBY
     end

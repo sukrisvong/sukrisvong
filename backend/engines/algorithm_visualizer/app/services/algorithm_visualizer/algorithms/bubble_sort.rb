@@ -5,10 +5,10 @@ module AlgorithmVisualizer
       LABEL = "Bubble Sort"
       SOURCE = <<~RUBY
         def sort(arr)
-          n = arr.length
-          (n - 1).times do |i|
-            (n - 1 - i).times do |j|
-              arr.swap(j, j + 1) if arr.compare(j, j + 1) > 0
+          length = arr.length
+          (length - 1).times do |pass|
+            (length - 1 - pass).times do |index|
+              arr.swap(index, index + 1) if arr.compare(index, index + 1) > 0
             end
           end
         end

@@ -5,14 +5,14 @@ module AlgorithmVisualizer
       LABEL = "Shell Sort"
       SOURCE = <<~RUBY
         def sort(arr)
-          n = arr.length
-          gap = n / 2
+          length = arr.length
+          gap = length / 2
           while gap > 0
-            (gap...n).each do |i|
-              j = i
-              while j >= gap && arr.compare(j - gap, j) > 0
-                arr.swap(j - gap, j)
-                j -= gap
+            (gap...length).each do |index|
+              position = index
+              while position >= gap && arr.compare(position - gap, position) > 0
+                arr.swap(position - gap, position)
+                position -= gap
               end
             end
             gap /= 2
