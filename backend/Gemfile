@@ -55,3 +55,5 @@ end
 
 gem "core", path: "engines/core"
 gem "productivity_calculator", path: "engines/productivity_calculator"
+
+gem "algorithm_visualizer", path: "engines/algorithm_visualizer"
