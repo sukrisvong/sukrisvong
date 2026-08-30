@@ -2,7 +2,6 @@ module AlgorithmVisualizer
   class SortRunner
     TIMEOUT_SECONDS = 3
     MAX_STEPS = 50_000
-    FORBIDDEN = /\b(require|require_relative|load|system|exec|spawn|fork|eval|open|IO|File|Dir|Net|Socket|Kernel|Process|ObjectSpace|Binding|Method|UnboundMethod|BasicObject|__send__|send|public_send|instance_eval|class_eval|module_eval)\b/
 
     Result = Data.define(:initial, :steps, :final, :stats, :error)
 
@@ -16,13 +15,8 @@ module AlgorithmVisualizer
     end
 
     def run
-      if @code.match?(FORBIDDEN)
-        return Result.new(initial: nil, steps: nil, final: nil, stats: nil,
-                          error: "Code contains forbidden operations")
-      end
-
       arr = TrackedArray.new(@input)
-      sandbox = SortSandbox.new(arr)
+      sandbox = SortSandbox.new
 
       begin
         Timeout.timeout(TIMEOUT_SECONDS) do
@@ -32,6 +26,9 @@ module AlgorithmVisualizer
       rescue Timeout::Error
         return Result.new(initial: nil, steps: nil, final: nil, stats: nil,
                           error: "Execution timed out (#{TIMEOUT_SECONDS}s limit)")
+      rescue ::NameError, ::NoMethodError => e
+        return Result.new(initial: nil, steps: nil, final: nil, stats: nil,
+                          error: "#{e.class}: #{e.message}")
       rescue => e
         return Result.new(initial: nil, steps: nil, final: nil, stats: nil,
                           error: e.message)
@@ -53,10 +50,32 @@ module AlgorithmVisualizer
     end
   end
 
-  # Sandbox object — only exposes TrackedArray and basic Ruby
-  class SortSandbox
-    def initialize(arr)
-      @arr = arr
+  # BasicObject-based sandbox: inherits nothing from Kernel.
+  # Undefined constants and methods raise immediately — whitelist only.
+  class SortSandbox < BasicObject
+    def self.const_missing(name)
+      ::Kernel.raise ::NameError, "uninitialized constant #{name}"
+    end
+
+    # Safe Kernel methods explicitly re-exposed.
+    def raise(*args)
+      ::Kernel.raise(*args)
+    end
+
+    def loop(&block)
+      ::Kernel.loop(&block)
+    end
+
+    def puts(*args)
+      # silently swallow — no output side effects
+    end
+
+    def p(*args)
+      # silently swallow
+    end
+
+    def method_missing(name, *_args, &_block)
+      ::Kernel.raise ::NoMethodError, "undefined method '#{name}'"
     end
   end
 end

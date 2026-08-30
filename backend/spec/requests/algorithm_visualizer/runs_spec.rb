@@ -41,11 +41,11 @@ RSpec.describe "AlgorithmVisualizer::Runs", type: :request do
       end
     end
 
-    context "with forbidden code" do
+    context "with code that calls forbidden methods" do
       it "returns an error" do
-        post "/api/algorithm_visualizer/runs", params: { code: "require 'json'\ndef sort(arr); end" }
+        post "/api/algorithm_visualizer/runs", params: { code: "def sort(arr); system('ls'); end" }
         expect(response).to have_http_status(:unprocessable_content)
-        expect(JSON.parse(response.body)["error"]).to match(/forbidden/)
+        expect(JSON.parse(response.body)["error"]).to match(/NoMethodError/)
       end
     end
   end

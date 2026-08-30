@@ -8,10 +8,10 @@ RSpec.describe AlgorithmVisualizer::SortRunner do
       let(:code) do
         <<~RUBY
           def sort(arr)
-            n = arr.length
-            (n - 1).times do |i|
-              (n - 1 - i).times do |j|
-                arr.swap(j, j + 1) if arr.compare(j, j + 1) > 0
+            length = arr.length
+            (length - 1).times do |pass|
+              (length - 1 - pass).times do |index|
+                arr.swap(index, index + 1) if arr.compare(index, index + 1) > 0
               end
             end
           end
@@ -38,15 +38,20 @@ RSpec.describe AlgorithmVisualizer::SortRunner do
       end
     end
 
-    context "with forbidden code" do
+    context "with code that calls a forbidden Kernel method" do
       it "rejects require" do
-        result = described_class.run(code: "require 'json'\ndef sort(arr); end", input: input)
-        expect(result.error).to match(/forbidden/)
+        result = described_class.run(code: "def sort(arr); require 'json'; end", input: input)
+        expect(result.error).to match(/NoMethodError|NameError/)
       end
 
-      it "rejects system calls" do
+      it "rejects system" do
         result = described_class.run(code: "def sort(arr); system('ls'); end", input: input)
-        expect(result.error).to match(/forbidden/)
+        expect(result.error).to match(/NoMethodError/)
+      end
+
+      it "rejects access to undefined constants like File" do
+        result = described_class.run(code: "def sort(arr); File.read('/etc/passwd'); end", input: input)
+        expect(result.error).to match(/NameError/)
       end
     end
 
@@ -64,6 +69,13 @@ RSpec.describe AlgorithmVisualizer::SortRunner do
       end
     end
 
+    context "with puts or p in user code" do
+      it "runs without error and ignores output" do
+        result = described_class.run(code: "def sort(arr); puts arr.length; p arr.length; end", input: input)
+        expect(result.error).to be_nil
+      end
+    end
+
     context "with invalid sort (not sorted)" do
       it "still returns the result without error" do
         result = described_class.run(code: "def sort(arr); end", input: input)
@@ -77,10 +89,10 @@ RSpec.describe AlgorithmVisualizer::SortRunner do
         stub_const("AlgorithmVisualizer::SortRunner::MAX_STEPS", 1)
         result = described_class.run(code: <<~RUBY, input: [ 3, 1, 2 ])
           def sort(arr)
-            n = arr.length
-            (n - 1).times do |i|
-              (n - 1 - i).times do |j|
-                arr.swap(j, j + 1) if arr.compare(j, j + 1) > 0
+            length = arr.length
+            (length - 1).times do |pass|
+              (length - 1 - pass).times do |index|
+                arr.swap(index, index + 1) if arr.compare(index, index + 1) > 0
               end
             end
           end
