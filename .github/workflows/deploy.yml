@@ -21,7 +21,7 @@ jobs:
           script: |
             cd /app
             git pull origin main
-            docker compose --env-file /app/.env -f docker-compose.yml -f docker-compose.prod.yml build --no-cache
+            docker compose --env-file /app/.env -f docker-compose.yml -f docker-compose.prod.yml build
             docker compose --env-file /app/.env -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans --force-recreate
             docker compose --env-file /app/.env -f docker-compose.yml -f docker-compose.prod.yml exec backend bundle exec rails db:migrate
             docker image prune -f
