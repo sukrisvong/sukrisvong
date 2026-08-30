@@ -14,7 +14,14 @@ module AlgorithmVisualizer
       @input = input
     end
 
+    ABSOLUTE_CONST = /::[A-Z]/
+
     def run
+      if @code.match?(ABSOLUTE_CONST)
+        return Result.new(initial: nil, steps: nil, final: nil, stats: nil,
+                          error: "Code contains absolute constant references (::)")
+      end
+
       arr = TrackedArray.new(@input)
       sandbox = SortSandbox.new
 

@@ -38,6 +38,13 @@ RSpec.describe AlgorithmVisualizer::SortRunner do
       end
     end
 
+    context "with absolute constant references" do
+      it "rejects ::File" do
+        result = described_class.run(code: "def sort(arr); ::File.read('/etc/passwd'); end", input: input)
+        expect(result.error).to match(/absolute constant/)
+      end
+    end
+
     context "with code that calls a forbidden Kernel method" do
       it "rejects require" do
         result = described_class.run(code: "def sort(arr); require 'json'; end", input: input)
