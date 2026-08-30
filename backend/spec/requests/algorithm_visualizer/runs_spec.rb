@@ -28,9 +28,9 @@ RSpec.describe "AlgorithmVisualizer::Runs", type: :request do
 
     context "with custom input" do
       it "sorts the provided array" do
-        post "/api/algorithm_visualizer/runs", params: { code: valid_code, input: [5, 2, 8, 1] }
+        post "/api/algorithm_visualizer/runs", params: { code: valid_code, input: [ 5, 2, 8, 1 ] }
         body = JSON.parse(response.body)
-        expect(body["final"]).to eq([1, 2, 5, 8])
+        expect(body["final"]).to eq([ 1, 2, 5, 8 ])
       end
     end
 

@@ -13,7 +13,7 @@ module AlgorithmVisualizer
       input = parse_input
       return render json: { error: "Input must be an array of 2–100 integers" }, status: :unprocessable_content unless valid_input?(input)
 
-      result = SortRunner.run(code: algo::SOURCE, input:)
+      result = SortRunner.run(code: algo::SOURCE, input: input)
 
       if result.error
         render json: { error: result.error }, status: :unprocessable_content

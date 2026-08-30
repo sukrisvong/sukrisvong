@@ -1,13 +1,13 @@
 require "rails_helper"
 
 RSpec.describe AlgorithmVisualizer::TrackedArray do
-  subject(:arr) { described_class.new([3, 1, 2]) }
+  subject(:arr) { described_class.new([ 3, 1, 2 ]) }
 
   describe "#compare" do
     it "records a compare step and returns spaceship result" do
       result = arr.compare(0, 1)
       expect(result).to eq(1)
-      expect(arr.steps.last).to include(type: "compare", indices: [0, 1])
+      expect(arr.steps.last).to include(type: "compare", indices: [ 0, 1 ])
       expect(arr.comparison_count).to eq(1)
     end
   end
@@ -17,7 +17,7 @@ RSpec.describe AlgorithmVisualizer::TrackedArray do
       arr.swap(0, 1)
       expect(arr[0]).to eq(1)
       expect(arr[1]).to eq(3)
-      expect(arr.steps.last).to include(type: "swap", indices: [0, 1])
+      expect(arr.steps.last).to include(type: "swap", indices: [ 0, 1 ])
       expect(arr.swap_count).to eq(1)
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe AlgorithmVisualizer::TrackedArray do
     it "returns a copy of the underlying data" do
       copy = arr.to_a
       arr.swap(0, 1)
-      expect(copy).to eq([3, 1, 2])
+      expect(copy).to eq([ 3, 1, 2 ])
     end
   end
 end

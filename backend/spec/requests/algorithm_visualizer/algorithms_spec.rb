@@ -29,9 +29,9 @@ RSpec.describe "AlgorithmVisualizer::Algorithms", type: :request do
 
     context "with custom input" do
       it "sorts the provided array" do
-        post "/api/algorithm_visualizer/algorithms/bubble_sort/run", params: { input: [5, 2, 8] }
+        post "/api/algorithm_visualizer/algorithms/bubble_sort/run", params: { input: [ 5, 2, 8 ] }
         body = JSON.parse(response.body)
-        expect(body["final"]).to eq([2, 5, 8])
+        expect(body["final"]).to eq([ 2, 5, 8 ])
       end
     end
 

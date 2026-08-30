@@ -1,12 +1,12 @@
 module AlgorithmVisualizer
   class RunsController < ApplicationController
-    DEFAULT_INPUT = [38, 27, 43, 3, 9, 82, 10, 1, 55, 17].freeze
+    DEFAULT_INPUT = [ 38, 27, 43, 3, 9, 82, 10, 1, 55, 17 ].freeze
 
     def create
       input = parse_input
       return render json: { error: "Input must be an array of 2–100 integers" }, status: :unprocessable_content unless valid_input?(input)
 
-      result = SortRunner.run(code: params.require(:code), input:)
+      result = SortRunner.run(code: params.require(:code), input: input)
 
       if result.error
         render json: { error: result.error }, status: :unprocessable_content

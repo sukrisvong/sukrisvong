@@ -7,7 +7,7 @@ module AlgorithmVisualizer
     Result = Data.define(:initial, :steps, :final, :stats, :error)
 
     def self.run(code:, input:)
-      new(code:, input:).run
+      new(code: code, input: input).run
     end
 
     def initialize(code:, input:)

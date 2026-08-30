@@ -19,14 +19,14 @@ module AlgorithmVisualizer
 
     def compare(i, j)
       @comparison_count += 1
-      @steps << { type: "compare", indices: [i, j], array: @data.dup }
+      @steps << { type: "compare", indices: [ i, j ], array: @data.dup }
       @data[i] <=> @data[j]
     end
 
     def swap(i, j)
       @swap_count += 1
       @data[i], @data[j] = @data[j], @data[i]
-      @steps << { type: "swap", indices: [i, j], array: @data.dup }
+      @steps << { type: "swap", indices: [ i, j ], array: @data.dup }
     end
 
     def length
