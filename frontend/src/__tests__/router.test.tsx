@@ -19,8 +19,8 @@ describe("routes", () => {
     })
   })
 
-  it("renders sorting visualizer at /sorting_visualizer", async () => {
-    const router = createMemoryRouter(routes, { initialEntries: ["/sorting_visualizer"] })
+  it("renders sorting visualizer at /algorithm_visualizer", async () => {
+    const router = createMemoryRouter(routes, { initialEntries: ["/algorithm_visualizer"] })
     render(<RouterProvider router={router} />)
     await waitFor(() => {
       expect(screen.getByRole("heading", { name: "Sorting Visualizer" })).toBeInTheDocument()

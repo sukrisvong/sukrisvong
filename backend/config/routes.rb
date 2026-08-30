@@ -3,5 +3,5 @@ Rails.application.routes.draw do
 
   mount Core::Engine, at: "/api/core"
   mount ProductivityCalculator::Engine, at: "/api/productivity_calculator"
-  mount SortingVisualizer::Engine, at: "/api/sorting_visualizer"
+  mount AlgorithmVisualizer::Engine, at: "/api/algorithm_visualizer"
 end

@@ -41,8 +41,8 @@ COPY engines/core/core.gemspec engines/core/core.gemspec
 COPY engines/core/lib/core/version.rb engines/core/lib/core/version.rb
 COPY engines/productivity_calculator/productivity_calculator.gemspec engines/productivity_calculator/productivity_calculator.gemspec
 COPY engines/productivity_calculator/lib/productivity_calculator/version.rb engines/productivity_calculator/lib/productivity_calculator/version.rb
-COPY engines/sorting_visualizer/sorting_visualizer.gemspec engines/sorting_visualizer/sorting_visualizer.gemspec
-COPY engines/sorting_visualizer/lib/sorting_visualizer/version.rb engines/sorting_visualizer/lib/sorting_visualizer/version.rb
+COPY engines/algorithm_visualizer/algorithm_visualizer.gemspec engines/algorithm_visualizer/algorithm_visualizer.gemspec
+COPY engines/algorithm_visualizer/lib/algorithm_visualizer/version.rb engines/algorithm_visualizer/lib/algorithm_visualizer/version.rb
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle install && \
