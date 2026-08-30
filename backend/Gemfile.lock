@@ -1,4 +1,10 @@
 PATH
+  remote: engines/algorithm_visualizer
+  specs:
+    algorithm_visualizer (0.1.0)
+      rails (>= 8.1.3.1)
+
+PATH
   remote: engines/core
   specs:
     core (0.1.0)
@@ -8,12 +14,6 @@ PATH
   remote: engines/productivity_calculator
   specs:
     productivity_calculator (0.1.0)
-      rails (>= 8.1.3.1)
-
-PATH
-  remote: engines/sorting_visualizer
-  specs:
-    sorting_visualizer (0.1.0)
       rails (>= 8.1.3.1)
 
 GEM
@@ -375,6 +375,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  algorithm_visualizer!
   bootsnap
   brakeman
   bundler-audit
@@ -392,7 +393,6 @@ DEPENDENCIES
   solid_cable
   solid_cache
   solid_queue
-  sorting_visualizer!
   thruster
   tzinfo-data
 
