@@ -1,7 +1,7 @@
 export default function AlgorithmVisualizerPage() {
   return (
     <div>
-      <h1>Sorting Visualizer</h1>
+      <h1>Algorithm Visualizer</h1>
     </div>
   )
 }

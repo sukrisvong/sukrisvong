@@ -4,6 +4,6 @@ import AlgorithmVisualizerPage from "../AlgorithmVisualizerPage"
 describe("AlgorithmVisualizerPage", () => {
   it("renders the page heading", () => {
     render(<AlgorithmVisualizerPage />)
-    expect(screen.getByRole("heading", { name: "Sorting Visualizer" })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "Algorithm Visualizer" })).toBeInTheDocument()
   })
 })

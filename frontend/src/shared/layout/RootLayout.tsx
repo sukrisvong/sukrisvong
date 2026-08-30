@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { Outlet } from "react-router-dom"
 
 export default function RootLayout() {
@@ -6,7 +7,9 @@ export default function RootLayout() {
       <nav>
         {/* Engine nav links will go here */}
       </nav>
-      <Outlet />
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
     </>
   )
 }
