@@ -98,7 +98,7 @@ describe("AlgorithmVisualizerPage", () => {
     await user.type(textarea, "5, 3, 1")
     await user.click(screen.getByRole("button", { name: /reset to default/i }))
 
-    expect(textarea).toHaveValue("38, 27, 43, 3, 9, 82, 10, 1, 55, 17")
+    expect(textarea).toHaveValue("8, 3, 1, 7, 5, 2, 6, 4, 9, 10")
   })
 
   it("shows comparison error when comparison run fails", async () => {

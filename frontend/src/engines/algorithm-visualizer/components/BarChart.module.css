@@ -2,6 +2,8 @@
   --cyan: #00fff5;
   --magenta: #ff00c8;
   --yellow: #f5e642;
+  --orange: #ff9500;
+  --pink: #ff6b9d;
   --bg: #080c10;
   --surface: #0d1117;
   --text: #c8e0e8;
@@ -38,14 +40,14 @@
   justify-content: flex-end;
   gap: 3px;
   min-width: 0;
-  transition: color 0.1s;
+  transition: color 0.08s;
 }
 
 .bar {
   width: 100%;
   min-height: 2px;
   border-radius: 2px 2px 0 0;
-  transition: height 0.08s ease, background 0.08s ease;
+  transition: height 0.08s ease, background 0.08s ease, box-shadow 0.08s ease;
 }
 
 .barLabel {
@@ -58,27 +60,38 @@
   text-align: center;
 }
 
-/* Color variants */
+/* ── Color roles ─────────────────────────────── */
+
 .normal .bar {
   background: var(--cyan);
-  box-shadow: 0 0 4px rgba(0, 255, 245, 0.4);
+  box-shadow: 0 0 4px rgba(0, 255, 245, 0.3);
 }
-.normal {
-  color: var(--dim);
-}
+.normal { color: var(--dim); }
 
-.compare .bar {
+/* Compare: left pointer (scanning / examining) */
+.compareA .bar {
   background: var(--yellow);
-  box-shadow: 0 0 8px var(--yellow);
+  box-shadow: 0 0 10px var(--yellow);
 }
-.compare {
-  color: var(--yellow);
-}
+.compareA { color: var(--yellow); }
 
-.swap .bar {
+/* Compare: right pointer (reference / target) */
+.compareB .bar {
+  background: var(--orange);
+  box-shadow: 0 0 10px var(--orange);
+}
+.compareB { color: var(--orange); }
+
+/* Swap: source element (being displaced) */
+.swapA .bar {
   background: var(--magenta);
-  box-shadow: 0 0 8px var(--magenta);
+  box-shadow: 0 0 10px var(--magenta);
 }
-.swap {
-  color: var(--magenta);
+.swapA { color: var(--magenta); }
+
+/* Swap: destination element */
+.swapB .bar {
+  background: var(--pink);
+  box-shadow: 0 0 10px var(--pink);
 }
+.swapB { color: var(--pink); }

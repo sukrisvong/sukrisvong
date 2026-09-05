@@ -23,21 +23,23 @@ describe("BarChart", () => {
     expect(screen.queryByText("1")).not.toBeInTheDocument()
   })
 
-  it("applies compare highlight to active indices", () => {
+  it("applies compareA to indices[0] and compareB to indices[1]", () => {
     const { container } = render(
       <BarChart values={[3, 1, 2]} activeIndices={[0, 1]} activeType="compare" />
     )
     const wrappers = container.querySelectorAll("[class*=barWrapper]")
-    expect(wrappers[0].className).toMatch(/compare/)
+    expect(wrappers[0].className).toMatch(/compareA/)
+    expect(wrappers[1].className).toMatch(/compareB/)
     expect(wrappers[2].className).toMatch(/normal/)
   })
 
-  it("applies swap highlight to active indices", () => {
+  it("applies swapA to indices[0] and swapB to indices[1]", () => {
     const { container } = render(
       <BarChart values={[3, 1, 2]} activeIndices={[1, 2]} activeType="swap" />
     )
     const wrappers = container.querySelectorAll("[class*=barWrapper]")
-    expect(wrappers[1].className).toMatch(/swap/)
+    expect(wrappers[1].className).toMatch(/swapA/)
+    expect(wrappers[2].className).toMatch(/swapB/)
     expect(wrappers[0].className).toMatch(/normal/)
   })
 

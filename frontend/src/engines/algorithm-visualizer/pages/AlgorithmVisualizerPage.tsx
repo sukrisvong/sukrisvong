@@ -7,7 +7,7 @@ import { usePlayback } from "../hooks/usePlayback"
 import type { Algorithm, AlgorithmRunResult, RunResult } from "../types"
 import styles from "./AlgorithmVisualizerPage.module.css"
 
-const DEFAULT_INPUT = [38, 27, 43, 3, 9, 82, 10, 1, 55, 17]
+const DEFAULT_INPUT = [8, 3, 1, 7, 5, 2, 6, 4, 9, 10]
 
 const STARTER_CODE = `def sort(arr)
   # arr supports:
