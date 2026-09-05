@@ -1,7 +1,22 @@
 # Production overlay — use with:
 # docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 
+networks:
+  sandbox_internal:
+    internal: true
+
 services:
+  sandbox:
+    build:
+      context: ./sandbox
+      dockerfile: Dockerfile
+    networks:
+      - sandbox_internal
+    restart: unless-stopped
+    read_only: true
+    mem_limit: 128m
+    cpus: 0.5
+
   db:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -15,12 +30,17 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     volumes: []
+    networks:
+      - default
+      - sandbox_internal
     environment:
       RAILS_ENV: production
       DATABASE_URL: ${DATABASE_URL}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
     command: []
+    depends_on:
+      - sandbox
 
   frontend:
     build:
