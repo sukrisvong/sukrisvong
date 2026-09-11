@@ -4,6 +4,7 @@ import RootLayout from "./shared/layout/RootLayout"
 import { coreRoutes } from "./engines/core/router"
 import { productivityCalculatorRoutes } from "./engines/productivity-calculator/router"
 import { algorithmVisualizerRoutes } from "./engines/algorithm-visualizer/router"
+import { arcadeRoutes } from "./engines/arcade/router"
 
 export const routes: RouteObject[] = [
   {
@@ -13,6 +14,7 @@ export const routes: RouteObject[] = [
       ...coreRoutes,
       { path: "productivity_calculator", children: productivityCalculatorRoutes },
       { path: "algorithm_visualizer", children: algorithmVisualizerRoutes },
+      { path: "arcade", children: arcadeRoutes },
     ],
   },
 ]
