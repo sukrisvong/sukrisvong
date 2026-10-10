@@ -11,7 +11,8 @@ module ProductivityCalculator
     private
 
     def calculator_params
-      params.permit(:start_time, :hours_scheduled, :minutes_scheduled, :productivity_goal).to_h.symbolize_keys
+      params.permit(:start_time, :mode, :hours_scheduled, :minutes_scheduled,
+                    :productivity_goal, :units, :include_lunch).to_h.symbolize_keys
     end
   end
 end
