@@ -150,6 +150,13 @@ describe("CalculatorPage", () => {
     expect(body.include_lunch).toBe(true)
   })
 
+  it("defaults units to 24", async () => {
+    render(<CalculatorPage />)
+    await userEvent.click(screen.getByRole("tab", { name: "Unit Based" }))
+    const unitsInput = screen.getByLabelText(/Units \(1 unit/i) as HTMLInputElement
+    expect(unitsInput.value).toBe("24")
+  })
+
   it("updates units field", async () => {
     mockFetch({ time_required: "2 hours", end_time: "11:00 AM" })
     render(<CalculatorPage />)
