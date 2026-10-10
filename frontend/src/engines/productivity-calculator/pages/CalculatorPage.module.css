@@ -50,6 +50,40 @@
   margin: 0;
 }
 
+/* ── Tabs ── */
+.tabs {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab,
+.tabActive {
+  flex: 1;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.65rem 0;
+  cursor: pointer;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  transition: color 0.15s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.tabActive {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
 /* ── Form ── */
 .form {
   width: 100%;
