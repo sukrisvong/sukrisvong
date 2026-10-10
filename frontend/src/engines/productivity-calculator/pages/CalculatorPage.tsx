@@ -23,9 +23,10 @@ const DEFAULT_TIME_FORM = {
   include_lunch: false,
 }
 
+
 const DEFAULT_UNIT_FORM = {
   start_time: currentTimeHHMM(),
-  units: "20",
+  units: "24",
   productivity_goal: "75",
   include_lunch: false,
 }
@@ -120,7 +121,6 @@ export default function CalculatorPage() {
               id="tb_start_time"
               name="start_time"
               type="time"
-              step="900"
               value={timeForm.start_time}
               onChange={handleTimeChange}
               required
@@ -200,7 +200,6 @@ export default function CalculatorPage() {
               id="ub_start_time"
               name="start_time"
               type="time"
-              step="900"
               value={unitForm.start_time}
               onChange={handleUnitChange}
               required
