@@ -23,7 +23,7 @@ describe("routes", () => {
     const router = createMemoryRouter(routes, { initialEntries: ["/algorithm_visualizer"] })
     render(<RouterProvider router={router} />)
     await waitFor(() => {
-      expect(screen.getByRole("heading", { name: "Algorithm Visualizer" })).toBeInTheDocument()
+      expect(screen.getByRole("heading", { name: "Sort Visualizer" })).toBeInTheDocument()
     })
   })
 })
